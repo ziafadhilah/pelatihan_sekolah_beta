@@ -31,23 +31,27 @@
               </button>
             </div>
             <div>&nbsp;</div>
-            <div>
-              <select v-model="category">
-                <option value="Mobil">Mobil</option>
-                <option value="Motor">Motor</option>
-              </select>
-            </div>
+            <select class="form-select" v-model="category">
+              <option value="Mobil">Mobil</option>
+              <option value="Motor">Motor</option>
+            </select>
+            <button
+              class="btn btn-outline-primary py-1 px-3 me-4"
+              @click="shuffle"
+            >
+              Shuffle!
+            </button>
           </div>
         </div>
-        <div class="list-task row">
+        <transition-group name="tasks" tag="div" class="list-task row">
           <CardItem
-            v-for="(tasks, i) in resultQuery"
-            :key="i"
+            v-for="tasks in resultQuery"
+            :key="tasks.id"
             :tasks="tasks"
             :isGrid="isGrid"
             :ok="ok"
           />
-        </div>
+        </transition-group>
         <div class="action py-2">
           <a
             href="#"
@@ -127,6 +131,20 @@ export default {
           category: "Motor",
           isDone: false,
         },
+        {
+          id: 3,
+          title: "Task 3",
+          description: "ini deskripsi 3",
+          category: "Motor",
+          isDone: false,
+        },
+        {
+          id: 4,
+          title: "Task 4",
+          description: "ini deskripsi 4",
+          category: "Mobil",
+          isDone: false,
+        },
       ],
     };
   },
@@ -155,7 +173,25 @@ export default {
       }
     },
   },
+  methods: {
+    handleSubmit() {
+      console.log(this.form);
+      this.tasks.push(this.form);
+      this.isCreating = false;
+    },
+    shuffle() {
+      this.tasks = _.shuffle(this.tasks);
+    },
+  },
+  mounted() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
+  },
 };
 </script>
 <style>
+.tasks-move {
+  transition: 0.4s;
+}
 </style>
