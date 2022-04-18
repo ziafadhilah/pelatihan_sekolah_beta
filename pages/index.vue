@@ -19,7 +19,7 @@
               type="text"
               class="form-control"
               placeholder="Search"
-              v-model="searchQuery"
+              v-model="category"
             />
             <div class="d-flex align-items-center justify-content-end w-100">
               <span class="me-2">View As</span>
@@ -35,6 +35,10 @@
               <option value="Mobil">Mobil</option>
               <option value="Motor">Motor</option>
             </select>
+            <select class="form-select" v-model="sortby">
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
             <button
               class="btn btn-outline-primary py-1 px-3 me-4"
               @click="shuffle"
@@ -46,7 +50,7 @@
         <transition-group name="tasks" tag="div" class="list-task row">
           <CardItem
             v-for="tasks in resultQuery"
-            :key="tasks.id"
+            :key="JSON.stringify(tasks.id)"
             :tasks="tasks"
             :isGrid="isGrid"
             :ok="ok"
@@ -113,6 +117,7 @@ export default {
       ok: true,
       category: "",
       searchQuery: "",
+      sortby: "title",
       isGrid: false,
       isCreating: false,
       // Daftar task
